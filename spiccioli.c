@@ -122,7 +122,47 @@ char* spiccioli(int value, char* str){
     return res;
 }
 
+void remove_substring(char *s,const char *toremove)
+{
+  while( s=strstr(s,toremove) )
+    memmove(s,s+strlen(toremove),1+strlen(s+strlen(toremove)));
+}
+
+char *delete_highest_value(char *str){
+	char *token = NULL;
+	char *temporary_string = NULL;
+	char *token_relative_to_highest_value = NULL;
+	char *first_copy_of_str = strdup(str);
+	char *second_copy_of_str = strdup(str);
+
+	int temporary_max = 0;
+	int current_value = 0;	
+
+	token = strtok(first_copy_of_str, ",");
+	
+	while(token != NULL ){
+
+		if(token != NULL) {
+			temporary_string = strdup(token);
+			while(*temporary_string != ':') temporary_string++;
+			temporary_string++;
+			current_value = atoi(temporary_string);
+			if(current_value > temporary_max){
+				temporary_max = current_value; 
+				token_relative_to_highest_value = token;
+			}
+		}
+
+		token = strtok(NULL, ",");
+	}
+	remove_substring(second_copy_of_str, strcat(token_relative_to_highest_value,","));
+	
+	return second_copy_of_str;
+}
+
 int main(){
+	
+	assert(strcmp(delete_highest_value("a:150,b:15,c:14,d:10,e:5,f:3,g:2,h:1"),"b:15,c:14,d:10,e:5,f:3,g:2,h:1")==0);
     assert(strcmp(spiccioli(20, "b:2,a:9,c:1"), "aab")==0);
     assert(strcmp(spiccioli(4, "a:5,b:2,c:1"),"bb")==0);
     assert(strcmp(spiccioli(12,"a:3,b:2"),"aaaa")==0);
