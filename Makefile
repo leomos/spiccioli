@@ -1,2 +1,2 @@
 all: 
-	gcc spiccioli.c -o bin/spiccioli
+	gcc -g spiccioli_new.c -o bin/spiccioli
